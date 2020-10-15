@@ -3,12 +3,11 @@ import ReactDOM from 'react-dom'
 
 import './styles/index.scss'
 
-// import App from './components/App'
+import App from '../src/components/App'
 
 ReactDOM.render(
   <React.StrictMode>
-    Hello world
-    {/* <App /> */}
+    <App />
   </React.StrictMode>,
   document.getElementById('root'),
 )

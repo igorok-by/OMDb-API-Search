@@ -1,0 +1,17 @@
+@import "../../styles/variables";
+
+.app {
+  min-height: 100vh;
+
+  background-color: $default-bg;
+}
+
+.app__header {
+  margin-top: 40px;
+
+  background: transparent;
+}
+
+.app__content {
+  margin: 0 calc(50px - 1rem);
+}
