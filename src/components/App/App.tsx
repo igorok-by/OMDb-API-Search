@@ -1,28 +1,29 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, useEffect, useState } from 'react'
 import { Layout, Row, Col, Tabs } from 'antd'
 import { UnorderedListOutlined, DatabaseOutlined } from '@ant-design/icons'
 
 import './App.scss'
 
+import { getResource } from '../../utils/api'
 import SearchForm from '../SearchForm'
 import SearchList from '../SearchList'
 
-import { IListItem } from '../../models'
-
-const listData: IListItem[] = []
-for (let i = 0; i < 3; i++) {
-  listData.push({
-    href: 'https://ant.design',
-    title: `ant design part ${i}`,
-    avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-    description:
-      'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-    content:
-      'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-  })
-}
+import { IListItem, IListData } from '../../models'
 
 const App: FunctionComponent = () => {
+  const [listData, setListData] = useState<IListItem[]>([])
+  const [pageCount, setPageCount] = useState<number>(1)
+
+  useEffect(() => {
+    getResource('monkey', pageCount).then((data: IListData) => {
+      console.log(data)
+      if (data.items) {
+        const nextListData = data.items
+        setListData((state) => [...state, ...nextListData])
+      }
+    })
+  }, [pageCount])
+
   return (
     <Layout className="app">
       <Layout.Header className="app__header">

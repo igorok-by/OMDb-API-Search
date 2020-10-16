@@ -14,7 +14,7 @@ const SearchList: FunctionComponent<SearchListProps> = ({ listData }) => {
   const renderItem = (item: IListItem) => (
     <List.Item
       className="list__item"
-      key={item.title}
+      key={item.id}
       extra={
         <Button type="link">
           <TagOutlined />
@@ -22,7 +22,7 @@ const SearchList: FunctionComponent<SearchListProps> = ({ listData }) => {
       }
     >
       <List.Item.Meta
-        avatar={<Avatar src={item.avatar} />}
+        avatar={<Avatar src={item.imageSrc} />}
         title={<a href={item.href}>{item.title}</a>}
         description={item.description}
       />

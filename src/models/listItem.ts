@@ -1,9 +1,16 @@
 import { ReactNode } from 'react'
 
 export interface IListItem {
+  id: string
   href: string
   title: string
-  avatar: string
+  imageSrc: string
   description: string
-  content: string | ReactNode
+  content?: string | ReactNode
+}
+
+export interface IListData {
+  isValidSearchValue: boolean
+  totalResults?: string
+  items?: IListItem[]
 }
