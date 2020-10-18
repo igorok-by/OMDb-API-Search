@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 
-export interface IListItem {
+export interface IFilmItem {
   id: string
   href: string
   title: string
@@ -9,8 +9,8 @@ export interface IListItem {
   content?: string | ReactNode
 }
 
-export interface IListData {
+export interface IFilmsData {
   isValidSearchValue: boolean
   totalResults?: string
-  items?: IListItem[]
+  items?: IFilmItem[]
 }

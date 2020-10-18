@@ -8,21 +8,21 @@ import { getResource } from '../../utils/api'
 import SearchForm from '../SearchForm'
 import SearchList from '../SearchList'
 
-import { IListItem, IListData } from '../../models'
+import { IFilmItem, IFilmsData } from '../../models'
 
 const App: FunctionComponent = () => {
-  const [listData, setListData] = useState<IListItem[]>([])
-  const [pageCount, setPageCount] = useState<number>(1)
+  // const [filmsData, setFilmsData] = useState<IFilmItem[]>([])
+  // const [pageCount, setPageCount] = useState<number>(1)
 
-  useEffect(() => {
-    getResource('monkey', pageCount).then((data: IListData) => {
-      console.log(data)
-      if (data.items) {
-        const nextListData = data.items
-        setListData((state) => [...state, ...nextListData])
-      }
-    })
-  }, [pageCount])
+  // useEffect(() => {
+  //   getResource('monkey', pageCount).then((data: IFilmsData) => {
+  //     console.log(data)
+  //     if (data.items) {
+  //       const nextFilmsData = data.items
+  //       setFilmsData((state) => [...state, ...nextFilmsData])
+  //     }
+  //   })
+  // }, [pageCount])
 
   return (
     <Layout className="app">
@@ -46,7 +46,7 @@ const App: FunctionComponent = () => {
                 }
                 key="1"
               >
-                <SearchList listData={listData} />
+                <SearchList />
               </Tabs.TabPane>
 
               <Tabs.TabPane

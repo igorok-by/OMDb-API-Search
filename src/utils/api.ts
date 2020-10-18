@@ -1,4 +1,4 @@
-import { IDataApi, IDataApiItem, IListItem, IListData } from '../models'
+import { IDataApi, IDataApiItem, IFilmItem, IFilmsData } from '../models'
 import { OMDB_API_KEY, BASE_URL } from './constants'
 
 const createRequestUrl = (searchValue: string, pageCount: number = 1) => {
@@ -12,11 +12,11 @@ const createRequestUrl = (searchValue: string, pageCount: number = 1) => {
     (acc, item) => `${acc}&${item[0]}=${item[1]}`,
     BASE_URL,
   )
-
+  console.log(url)
   return url
 }
 
-const getPage = (data: IDataApi) => {
+const getPage = (data: IDataApi): IFilmsData => {
   if (data.Response === 'False') {
     return {
       isValidSearchValue: false,
@@ -27,7 +27,7 @@ const getPage = (data: IDataApi) => {
     isValidSearchValue: true,
     totalResults: data.totalResults,
     items: data.Search.map(
-      (item: IDataApiItem, idx: number): IListItem => ({
+      (item: IDataApiItem, idx: number): IFilmItem => ({
         id: `${item.imdbID}${idx}`,
         href: `https://www.imdb.com/title/${item.imdbID}/`,
         title: item.Title,
@@ -41,7 +41,7 @@ const getPage = (data: IDataApi) => {
 export const getResource = async (
   searchValue: string,
   pageCount: number,
-): Promise<IListData> => {
+): Promise<IFilmsData> => {
   const res = await fetch(createRequestUrl(searchValue, pageCount))
 
   if (!res.ok) {

@@ -1,17 +1,18 @@
 import React, { FunctionComponent } from 'react'
+import { connect } from 'react-redux'
 import { List, Avatar, Button } from 'antd'
 import { TagOutlined } from '@ant-design/icons'
 
 import './SearchList.scss'
 
-import { IListItem } from '../../models'
+import { IFilmItem } from '../../models'
 
 type SearchListProps = {
-  listData: IListItem[]
+  films: IFilmItem[]
 }
 
-const SearchList: FunctionComponent<SearchListProps> = ({ listData }) => {
-  const renderItem = (item: IListItem) => (
+const SearchList: FunctionComponent<SearchListProps> = ({ films }) => {
+  const renderItem = (item: IFilmItem) => (
     <List.Item
       className="list__item"
       key={item.id}
@@ -35,10 +36,42 @@ const SearchList: FunctionComponent<SearchListProps> = ({ listData }) => {
       className="list"
       itemLayout="vertical"
       size="large"
-      dataSource={listData}
+      dataSource={films}
       renderItem={renderItem}
     />
   )
 }
 
-export default SearchList
+const SearchListContainer = ({
+  films,
+  loading,
+  error,
+}: {
+  films: IFilmItem[]
+  loading: boolean
+  error: Error
+}) => {
+  if (loading) {
+    return <h1>Loading...(Spinner)</h1>
+  }
+
+  if (error) {
+    return <h1>Error happened</h1>
+  }
+
+  return <SearchList films={films} />
+}
+
+const mapStateToProps = ({
+  films,
+  loading,
+  error,
+}: {
+  films: IFilmItem[]
+  loading: boolean
+  error: Error
+}) => {
+  return { films, loading, error }
+}
+
+export default connect(mapStateToProps)(SearchListContainer)
