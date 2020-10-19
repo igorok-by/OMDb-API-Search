@@ -5,7 +5,7 @@ export type State = {
   searchSentence: string
   films: IFilmsData[]
   totalResults: number
-  pageCount: number
+  currentPage: number
   loading: boolean
   error: any
 }

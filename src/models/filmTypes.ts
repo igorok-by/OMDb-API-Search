@@ -11,6 +11,6 @@ export interface IFilmItem {
 
 export interface IFilmsData {
   isValidSearchValue: boolean
-  totalResults?: string
+  totalResults?: number
   items?: IFilmItem[]
 }

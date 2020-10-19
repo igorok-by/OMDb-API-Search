@@ -1,12 +1,12 @@
 import { IDataApi, IDataApiItem, IFilmItem, IFilmsData } from '../models'
 import { OMDB_API_KEY, BASE_URL } from './constants'
 
-const createRequestUrl = (searchValue: string, pageCount: number = 1) => {
+const createRequestUrl = (searchValue: string, currentPage: number = 1) => {
   const searchSentence = searchValue.trim().replace(/\s+/gi, '%20')
 
   const urlParams = {
     s: searchSentence,
-    page: pageCount,
+    page: currentPage,
     apikey: OMDB_API_KEY,
   }
 
@@ -27,7 +27,7 @@ const getPage = (data: IDataApi): IFilmsData => {
 
   return {
     isValidSearchValue: true,
-    totalResults: data.totalResults,
+    totalResults: Number(data.totalResults),
     items: data.Search.map(
       (item: IDataApiItem, idx: number): IFilmItem => ({
         id: `${item.imdbID}${idx}`,
@@ -42,9 +42,9 @@ const getPage = (data: IDataApi): IFilmsData => {
 
 export const getResource = async (
   searchValue: string,
-  pageCount: number,
+  currentPage: number,
 ): Promise<IFilmsData> => {
-  const res = await fetch(createRequestUrl(searchValue, pageCount))
+  const res = await fetch(createRequestUrl(searchValue, currentPage))
 
   if (!res.ok) {
     throw new Error(`Could not fetch ${searchValue}, received ${res.status}`)

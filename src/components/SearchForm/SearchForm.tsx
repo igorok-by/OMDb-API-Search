@@ -1,62 +1,94 @@
-import React, { useEffect } from 'react'
+import React, {
+  FunctionComponent,
+  useEffect,
+  useState,
+  useCallback,
+} from 'react'
 import { connect } from 'react-redux'
 import { getResource } from '../../utils/api'
-import { fetchFilms, updateSearchSentence } from '../../store/actionCreators'
+import { FIRST_PAGE_NUMBER } from '../../utils/constants'
+import {
+  cleanFilms,
+  updateSearchSentence,
+  updatePageCount,
+  fetchFilms,
+} from '../../store/actionCreators'
 
-import { Form, Input } from 'antd'
+import { Input } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
 
-const SearchForm = ({
-  handleSearch,
-}: {
-  handleSearch: (value: string) => void
-}) => {
+type SearchFormContainerProps = {
+  searchSentence: string
+  currentPage: number
+  fetchFilmsData: (searchValue: string, page: number) => void
+  updateSearchSentence: (searchValue: string) => void
+  cleanFilms: () => void
+  updatePageCount: (newPageCount: number) => void
+}
+
+type SearchFormProps = {
+  handleSearch: (searchValue: string) => void
+}
+
+const SearchForm: FunctionComponent<SearchFormProps> = ({ handleSearch }) => {
+  const [inputValue, setInputValue] = useState('')
+
+  const onChange = (evt: any) => {
+    evt.target && setInputValue(evt.target.value)
+  }
+
+  const onSearch = (inputValue: string) => {
+    setInputValue('')
+
+    const searchValue = inputValue.trim().toLowerCase()
+    searchValue && handleSearch(searchValue)
+  }
+
   return (
-    <Form name="search-form">
-      <Form.Item name="search-input">
-        <Input.Search
-          prefix={<SearchOutlined />}
-          placeholder="Type your request here"
-          enterButton="Search"
-          onSearch={(value) => handleSearch(value)}
-        />
-      </Form.Item>
-    </Form>
+    <Input.Search
+      allowClear
+      value={inputValue}
+      prefix={<SearchOutlined />}
+      placeholder="Type your request here"
+      enterButton="Search"
+      onChange={onChange}
+      onSearch={onSearch}
+    />
   )
 }
 
-const SearchFormContainer = ({
+const SearchFormContainer: FunctionComponent<SearchFormContainerProps> = ({
   searchSentence,
-  pageCount,
+  currentPage,
   fetchFilmsData,
   updateSearchSentence,
-}: {
-  searchSentence: string
-  pageCount: number
-  fetchFilmsData: (searchValue: string, page: number) => void
-  updateSearchSentence: (searchValue: string) => void
+  updatePageCount,
+  cleanFilms,
 }) => {
   useEffect(() => {
-    fetchFilmsData(searchSentence, pageCount)
-  }, [fetchFilmsData, pageCount, searchSentence])
+    console.log('useEff')
+    cleanFilms()
+    updatePageCount(FIRST_PAGE_NUMBER)
+    fetchFilmsData(searchSentence, currentPage)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [searchSentence])
 
-  const handleSearch = (searchValue: string) => {
-    updateSearchSentence(searchValue)
-  }
+  const handleSearch = useCallback(
+    (searchValue: string) => {
+      if (searchValue && searchValue !== searchSentence) {
+        updateSearchSentence(searchValue)
+      }
+    },
+    [searchSentence, updateSearchSentence],
+  )
 
   return <SearchForm handleSearch={handleSearch} />
 }
 
-const mapStateToProps = ({
-  searchSentence,
-  pageCount,
-}: {
+const mapStateToProps = (state: {
   searchSentence: string
-  pageCount: number
-}) => ({
-  searchSentence,
-  pageCount,
-})
+  currentPage: number
+}) => state
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
@@ -64,6 +96,9 @@ const mapDispatchToProps = (dispatch: any) => {
       fetchFilms(getResource(searchValue, page), dispatch),
     updateSearchSentence: (searchSentence: string) =>
       dispatch(updateSearchSentence(searchSentence)),
+    updatePageCount: (newPageCount: number) =>
+      dispatch(updatePageCount(newPageCount)),
+    cleanFilms: () => dispatch(cleanFilms()),
   }
 }
 
