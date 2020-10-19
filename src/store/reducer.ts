@@ -2,14 +2,14 @@ import {
   FETCH_FILMS_REQUEST,
   FETCH_FILMS_SUCCESS,
   FETCH_FILMS_FAILURE,
-  UPDATE_SEARCH_VALUE,
+  UPDATE_SEARCH_SENTENCE,
 } from './actionTypes'
 
 import { Action, State } from '../models'
 
 const initialState: State = {
   isValidSearchValue: true,
-  searchValue: '',
+  searchSentence: 'hello world',
   films: [],
   totalResults: 0,
   pageCount: 1,
@@ -43,10 +43,10 @@ const reducer = (state: State = initialState, action: Action) => {
         error: action.payload,
       }
 
-    case UPDATE_SEARCH_VALUE:
+    case UPDATE_SEARCH_SENTENCE:
       return {
         ...state,
-        searchValue: action.payload,
+        searchSentence: action.payload,
       }
 
     default:

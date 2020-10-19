@@ -1,12 +1,16 @@
-import React, { FunctionComponent, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { getResource } from '../../utils/api'
-import { fetchFilms } from '../../store/actionCreators'
+import { fetchFilms, updateSearchSentence } from '../../store/actionCreators'
 
 import { Form, Input } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
 
-const SearchForm: FunctionComponent = () => {
+const SearchForm = ({
+  handleSearch,
+}: {
+  handleSearch: (value: string) => void
+}) => {
   return (
     <Form name="search-form">
       <Form.Item name="search-input">
@@ -14,7 +18,7 @@ const SearchForm: FunctionComponent = () => {
           prefix={<SearchOutlined />}
           placeholder="Type your request here"
           enterButton="Search"
-          onSearch={(value) => console.log(value)}
+          onSearch={(value) => handleSearch(value)}
         />
       </Form.Item>
     </Form>
@@ -22,27 +26,44 @@ const SearchForm: FunctionComponent = () => {
 }
 
 const SearchFormContainer = ({
-  searchValue,
-  fetchFilms,
+  searchSentence,
+  pageCount,
+  fetchFilmsData,
+  updateSearchSentence,
 }: {
-  searchValue: string
-  fetchFilms: () => void
+  searchSentence: string
+  pageCount: number
+  fetchFilmsData: (searchValue: string, page: number) => void
+  updateSearchSentence: (searchValue: string) => void
 }) => {
   useEffect(() => {
-    console.log('useEffect')
-    fetchFilms()
-  }, [fetchFilms])
+    fetchFilmsData(searchSentence, pageCount)
+  }, [fetchFilmsData, pageCount, searchSentence])
 
-  return <SearchForm />
+  const handleSearch = (searchValue: string) => {
+    updateSearchSentence(searchValue)
+  }
+
+  return <SearchForm handleSearch={handleSearch} />
 }
 
-const mapStateToProps = ({ searchValue }: { searchValue: string }) => ({
-  searchValue,
+const mapStateToProps = ({
+  searchSentence,
+  pageCount,
+}: {
+  searchSentence: string
+  pageCount: number
+}) => ({
+  searchSentence,
+  pageCount,
 })
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    fetchFilms: fetchFilms(getResource, dispatch),
+    fetchFilmsData: (searchValue: string, page: number) =>
+      fetchFilms(getResource(searchValue, page), dispatch),
+    updateSearchSentence: (searchSentence: string) =>
+      dispatch(updateSearchSentence(searchSentence)),
   }
 }
 

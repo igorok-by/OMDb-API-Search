@@ -2,7 +2,7 @@ import {
   FETCH_FILMS_REQUEST,
   FETCH_FILMS_SUCCESS,
   FETCH_FILMS_FAILURE,
-  UPDATE_SEARCH_VALUE,
+  UPDATE_SEARCH_SENTENCE,
 } from '../store/actionTypes'
 import { IFilmsData } from '../models'
 
@@ -20,20 +20,16 @@ const filmsError = (error: Error) => ({
   payload: error,
 })
 
-const updateSearchValue = (searchValue: string) => ({
-  type: UPDATE_SEARCH_VALUE,
-  payload: searchValue,
+const updateSearchSentence = (searchSentence: string) => ({
+  type: UPDATE_SEARCH_SENTENCE,
+  payload: searchSentence,
 })
 
-const fetchFilms = (
-  getResource: (searchValue: string, pageCount: number) => Promise<IFilmsData>,
-  dispatch: any,
-) => () => {
-  console.log('1')
+const fetchFilms = (getData: Promise<IFilmsData>, dispatch: any) => {
   dispatch(filmsRequested())
-  getResource('monkey', 1)
+  getData
     .then((data) => dispatch(filmsLoaded(data)))
     .catch((err: Error) => dispatch(filmsError(err)))
 }
 
-export { updateSearchValue, fetchFilms }
+export { updateSearchSentence, fetchFilms }

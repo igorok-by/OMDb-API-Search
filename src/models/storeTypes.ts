@@ -2,7 +2,7 @@ import { IFilmsData } from './filmTypes'
 
 export type State = {
   isValidSearchValue: boolean
-  searchValue: string
+  searchSentence: string
   films: IFilmsData[]
   totalResults: number
   pageCount: number

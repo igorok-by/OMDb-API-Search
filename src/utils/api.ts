@@ -2,8 +2,10 @@ import { IDataApi, IDataApiItem, IFilmItem, IFilmsData } from '../models'
 import { OMDB_API_KEY, BASE_URL } from './constants'
 
 const createRequestUrl = (searchValue: string, pageCount: number = 1) => {
+  const searchSentence = searchValue.trim().replace(/\s+/gi, '%20')
+
   const urlParams = {
-    s: searchValue,
+    s: searchSentence,
     page: pageCount,
     apikey: OMDB_API_KEY,
   }
@@ -12,7 +14,7 @@ const createRequestUrl = (searchValue: string, pageCount: number = 1) => {
     (acc, item) => `${acc}&${item[0]}=${item[1]}`,
     BASE_URL,
   )
-  console.log(url)
+
   return url
 }
 
