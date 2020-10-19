@@ -30,7 +30,7 @@ const getPage = (data: IDataApi): IFilmsData => {
     totalResults: Number(data.totalResults),
     items: data.Search.map(
       (item: IDataApiItem, idx: number): IFilmItem => ({
-        id: `${item.imdbID}${idx}`,
+        id: item.imdbID,
         href: `https://www.imdb.com/title/${item.imdbID}/`,
         title: item.Title,
         description: item.Year,

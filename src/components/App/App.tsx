@@ -5,7 +5,7 @@ import { UnorderedListOutlined, DatabaseOutlined } from '@ant-design/icons'
 import './App.scss'
 
 import SearchForm from '../SearchForm'
-import SearchList from '../SearchList'
+import SearchListContainer from '../SearchListContainer'
 
 const App: FunctionComponent = () => {
   return (
@@ -30,7 +30,7 @@ const App: FunctionComponent = () => {
                 }
                 key="1"
               >
-                <SearchList />
+                <SearchListContainer />
               </Tabs.TabPane>
 
               <Tabs.TabPane

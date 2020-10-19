@@ -66,7 +66,6 @@ const SearchFormContainer: FunctionComponent<SearchFormContainerProps> = ({
   cleanFilms,
 }) => {
   useEffect(() => {
-    console.log('useEff')
     cleanFilms()
     updatePageCount(FIRST_PAGE_NUMBER)
     fetchFilmsData(searchSentence, currentPage)
