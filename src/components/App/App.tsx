@@ -6,6 +6,7 @@ import './App.scss'
 
 import SearchForm from '../SearchForm'
 import SearchListContainer from '../SearchListContainer'
+import BookmarksContainer from '../BookmarksContainer'
 
 const App: FunctionComponent = () => {
   return (
@@ -42,7 +43,7 @@ const App: FunctionComponent = () => {
                 }
                 key="2"
               >
-                Content of Tab Pane 2
+                <BookmarksContainer />
               </Tabs.TabPane>
             </Tabs>
           </Col>

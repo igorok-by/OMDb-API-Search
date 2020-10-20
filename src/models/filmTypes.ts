@@ -4,8 +4,9 @@ export interface IFilmItem {
   id: string
   href: string
   title: string
-  imageSrc: string
   description: string
+  imageSrc: string
+  isBookmarked?: boolean
   content?: string | ReactNode
 }
 

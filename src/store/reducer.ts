@@ -5,6 +5,8 @@ import {
   FETCH_FILMS_FAILURE,
   UPDATE_SEARCH_SENTENCE,
   UPDATE_PAGE_COUNT,
+  ADD_FILM_TO_BOOKMARKS,
+  REMOVE_FILM_FROM_BOOKMARKS,
 } from './actionTypes'
 
 import { FIRST_PAGE_NUMBER } from '../utils/constants'
@@ -19,6 +21,7 @@ const initialState: State = {
   currentPage: FIRST_PAGE_NUMBER,
   loading: true,
   error: null,
+  bookmarkedFilms: [],
 }
 
 const reducer = (state: State = initialState, action: Action) => {
@@ -67,6 +70,27 @@ const reducer = (state: State = initialState, action: Action) => {
       return {
         ...state,
         currentPage: action.payload,
+      }
+
+    case ADD_FILM_TO_BOOKMARKS:
+      console.log('add')
+      return {
+        ...state,
+        bookmarkedFilms: [...state.bookmarkedFilms, action.payload],
+      }
+
+    case REMOVE_FILM_FROM_BOOKMARKS:
+      console.log('remove')
+      const idxOfRemoved = state.bookmarkedFilms.findIndex(
+        (film) => film.id === action.payload.id,
+      )
+
+      return {
+        ...state,
+        bookmarkedFilms: [
+          ...state.bookmarkedFilms.slice(0, idxOfRemoved),
+          ...state.bookmarkedFilms.slice(idxOfRemoved + 1),
+        ],
       }
 
     default:

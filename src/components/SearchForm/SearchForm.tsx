@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {
   FunctionComponent,
   useEffect,
@@ -14,13 +15,20 @@ import {
   fetchFilms,
 } from '../../store/actionCreators'
 
+import { IFilmItem } from '../../models'
+
 import { Input } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
 
 type SearchFormContainerProps = {
   searchSentence: string
   currentPage: number
-  fetchFilmsData: (searchValue: string, page: number) => void
+  bookmarkedFilms: IFilmItem[]
+  fetchFilmsData: (
+    searchValue: string,
+    page: number,
+    bookmarkedFilms: IFilmItem[],
+  ) => void
   updateSearchSentence: (searchValue: string) => void
   cleanFilms: () => void
   updatePageCount: (newPageCount: number) => void
@@ -60,6 +68,7 @@ const SearchForm: FunctionComponent<SearchFormProps> = ({ handleSearch }) => {
 const SearchFormContainer: FunctionComponent<SearchFormContainerProps> = ({
   searchSentence,
   currentPage,
+  bookmarkedFilms,
   fetchFilmsData,
   updateSearchSentence,
   updatePageCount,
@@ -68,8 +77,7 @@ const SearchFormContainer: FunctionComponent<SearchFormContainerProps> = ({
   useEffect(() => {
     cleanFilms()
     updatePageCount(FIRST_PAGE_NUMBER)
-    fetchFilmsData(searchSentence, currentPage)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    fetchFilmsData(searchSentence, currentPage, bookmarkedFilms)
   }, [searchSentence])
 
   const handleSearch = useCallback(
@@ -87,12 +95,16 @@ const SearchFormContainer: FunctionComponent<SearchFormContainerProps> = ({
 const mapStateToProps = (state: {
   searchSentence: string
   currentPage: number
+  bookmarkedFilms: IFilmItem[]
 }) => state
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    fetchFilmsData: (searchValue: string, page: number) =>
-      fetchFilms(getResource(searchValue, page), dispatch),
+    fetchFilmsData: (
+      searchValue: string,
+      page: number,
+      bookmarkedFilms: IFilmItem[],
+    ) => fetchFilms(getResource(searchValue, page), bookmarkedFilms, dispatch),
     updateSearchSentence: (searchSentence: string) =>
       dispatch(updateSearchSentence(searchSentence)),
     updatePageCount: (newPageCount: number) =>

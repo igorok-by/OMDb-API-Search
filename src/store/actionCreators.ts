@@ -5,8 +5,10 @@ import {
   FETCH_FILMS_FAILURE,
   UPDATE_SEARCH_SENTENCE,
   UPDATE_PAGE_COUNT,
+  ADD_FILM_TO_BOOKMARKS,
+  REMOVE_FILM_FROM_BOOKMARKS,
 } from '../store/actionTypes'
-import { IFilmsData } from '../models'
+import { IFilmItem, IFilmsData } from '../models'
 
 const cleanFilms = () => ({
   type: CLEAN_FILMS_DATA,
@@ -36,12 +38,38 @@ const updatePageCount = (newPageCount: number) => ({
   payload: newPageCount,
 })
 
-const fetchFilms = (getData: Promise<IFilmsData>, dispatch: any) => {
+const addFilmToBookmarks = (bookmarkedFilm: IFilmItem) => ({
+  type: ADD_FILM_TO_BOOKMARKS,
+  payload: bookmarkedFilm,
+})
+
+const removeFilmFromBookmarks = (bookmarkedFilm: IFilmItem) => ({
+  type: REMOVE_FILM_FROM_BOOKMARKS,
+  payload: bookmarkedFilm,
+})
+
+const fetchFilms = (
+  getData: Promise<IFilmsData>,
+  bookmarkedFilms: IFilmItem[],
+  dispatch: any,
+) => {
   dispatch(filmsRequested())
+
   getData
     .then((data) => {
       if (data.isValidSearchValue) {
-        return dispatch(filmsLoaded(data))
+        let updatedWithBookmarks: IFilmItem[] = []
+
+        if (data && data.items) {
+          updatedWithBookmarks = data.items.map((item) => {
+            bookmarkedFilms.forEach((film) => {
+              if (film.id === item.id) item.isBookmarked = true
+            })
+            return item
+          })
+        }
+
+        return dispatch(filmsLoaded({ ...data, items: updatedWithBookmarks }))
       } else {
         throw new Error("Sorry, we couldn't find any results for your request")
       }
@@ -49,4 +77,11 @@ const fetchFilms = (getData: Promise<IFilmsData>, dispatch: any) => {
     .catch((err: Error) => dispatch(filmsError(err)))
 }
 
-export { cleanFilms, updateSearchSentence, updatePageCount, fetchFilms }
+export {
+  cleanFilms,
+  updateSearchSentence,
+  updatePageCount,
+  fetchFilms,
+  addFilmToBookmarks,
+  removeFilmFromBookmarks,
+}

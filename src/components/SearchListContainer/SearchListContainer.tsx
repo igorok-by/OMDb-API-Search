@@ -7,6 +7,7 @@ import {
   fetchFilms,
   updatePageCount,
   addFilmToBookmarks,
+  removeFilmFromBookmarks,
 } from '../../store/actionCreators'
 
 import { ITEMS_PER_PAGE } from '../../utils/constants'
@@ -19,9 +20,15 @@ type SearchListContainerProps = {
   currentPage: number
   loading: boolean
   error: Error
-  fetchNextPageFilmsData: (searchSentence: string, page: number) => void
+  bookmarkedFilms: IFilmItem[]
+  fetchNextPageFilmsData: (
+    searchSentence: string,
+    page: number,
+    bookmarkedFilms: IFilmItem[],
+  ) => void
   updatePageCount: (newPageCount: number) => void
   addFilmToBookmarks: (bookmarkedFilm: IFilmItem) => void
+  removeFilmFromBookmarks: (bookmarkedFilm: IFilmItem) => void
 }
 
 const SearchListContainer: FunctionComponent<SearchListContainerProps> = ({
@@ -31,22 +38,32 @@ const SearchListContainer: FunctionComponent<SearchListContainerProps> = ({
   currentPage,
   loading,
   error,
+  bookmarkedFilms,
   fetchNextPageFilmsData,
   updatePageCount,
   addFilmToBookmarks,
+  removeFilmFromBookmarks,
 }) => {
   const handleLoadMore = useCallback(() => {
-    fetchNextPageFilmsData(searchSentence, currentPage + 1)
+    fetchNextPageFilmsData(searchSentence, currentPage + 1, bookmarkedFilms)
     updatePageCount(currentPage + 1)
   }, [currentPage, searchSentence])
 
   const handleBookmarkClick = useCallback(
     (id: string) => {
-      const bookmarkedFilm = films.find((film) => film.id === id)
+      const clickedFilm = films.find((film) => film.id === id)
 
-      bookmarkedFilm && addFilmToBookmarks(bookmarkedFilm)
+      if (clickedFilm) {
+        clickedFilm.isBookmarked = !clickedFilm.isBookmarked
+
+        clickedFilm.isBookmarked
+          ? addFilmToBookmarks(clickedFilm)
+          : removeFilmFromBookmarks(clickedFilm)
+      }
+      // console.log(bookmarkedFilms)
+      // clickedFilm.isBookmarked = true
     },
-    [films],
+    [films, bookmarkedFilms],
   )
 
   const isHiddenBtnLoadMore = totalResults <= currentPage * ITEMS_PER_PAGE
@@ -68,12 +85,18 @@ const mapStateToProps = (state: SearchListContainerProps) => state
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    fetchNextPageFilmsData: (searchSentence: string, page: number) =>
-      fetchFilms(getResource(searchSentence, page), dispatch),
+    fetchNextPageFilmsData: (
+      searchSentence: string,
+      page: number,
+      bookmarkedFilms: IFilmItem[],
+    ) =>
+      fetchFilms(getResource(searchSentence, page), bookmarkedFilms, dispatch),
     updatePageCount: (newPageCount: number) =>
       dispatch(updatePageCount(newPageCount)),
     addFilmToBookmarks: (bookmarkedFilm: IFilmItem) =>
       dispatch(addFilmToBookmarks(bookmarkedFilm)),
+    removeFilmFromBookmarks: (bookmarkedFilm: IFilmItem) =>
+      dispatch(removeFilmFromBookmarks(bookmarkedFilm)),
   }
 }
 

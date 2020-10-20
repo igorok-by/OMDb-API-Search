@@ -30,6 +30,7 @@ const FilmsList: FunctionComponent<FilmsListProps> = ({
       extra={
         <Button
           size="large"
+          danger={item.isBookmarked}
           type="link"
           onClick={() => onBookmarkClick && onBookmarkClick(item.id)}
         >

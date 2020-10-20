@@ -1,13 +1,14 @@
-import { IFilmsData } from './filmTypes'
+import { IFilmItem } from './filmTypes'
 
 export type State = {
   isValidSearchValue: boolean
   searchSentence: string
-  films: IFilmsData[]
+  films: IFilmItem[]
   totalResults: number
   currentPage: number
   loading: boolean
-  error: any
+  error: Error | null
+  bookmarkedFilms: IFilmItem[]
 }
 
 export type Action = {

@@ -35,6 +35,7 @@ const getPage = (data: IDataApi): IFilmsData => {
         title: item.Title,
         description: item.Year,
         imageSrc: item.Poster,
+        isBookmarked: false,
       }),
     ),
   }
