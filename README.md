@@ -1,6 +1,6 @@
 # Servicehub
 
-This is test task implemented in ```React.js``` (task conditions [here](https://github.com/ProkofyevAlexander/servicehub-angular-test))
+It is test task implemented in ```React.js``` (task conditions [here](https://github.com/ProkofyevAlexander/servicehub-angular-test))
 
 ## Getting Started
 
@@ -40,12 +40,18 @@ Make sure you have installed the following prerequisites on your development mac
 
 The project is based on the following technologies:
 
+- [React.js](https://reactjs.org/)
+- [Redux](https://redux.js.org/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [SCSS](https://sass-lang.com/)
-- [React.js](https://reactjs.org/)
 - [Ant Design](https://ant.design/)
+- [OMDb API](https://www.omdbapi.com/)
 
-## Authors
+## Deployed version:
+
+[igorok-by-omdb-search.netlify.app](https://igorok-by-omdb-search.netlify.app/)
+
+## Author
 
 **Igor Bachkovski:**
 * GitHub - [igorok-by](https://github.com/igorok-by)
