@@ -10,22 +10,10 @@ import {
   UPDATE_FILMS_BOOKMARKING,
 } from './actionTypes'
 
-import { FIRST_PAGE_NUMBER } from '../utils/constants'
-
 import { Action, State } from '../models'
+import { INITIAL_STATE } from '../utils/constants'
 
-const initialState: State = {
-  isValidSearchValue: true,
-  searchSentence: 'hello world',
-  films: [],
-  totalResults: 0,
-  currentPage: FIRST_PAGE_NUMBER,
-  loading: true,
-  error: null,
-  bookmarkedFilms: [],
-}
-
-const reducer = (state: State = initialState, action: Action) => {
+const reducer = (state: State = INITIAL_STATE, action: Action) => {
   switch (action.type) {
     case CLEAN_FILMS_DATA:
       return {

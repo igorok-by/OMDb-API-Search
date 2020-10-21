@@ -10,7 +10,9 @@
     "format": "prettier --write src"
   },
   "dependencies": {
+    "@types/lodash.throttle": "^4.1.6",
     "antd": "^4.6.2",
+    "lodash.throttle": "^4.1.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^5.1.2",
