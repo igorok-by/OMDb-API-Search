@@ -2,7 +2,7 @@
 import React, { FunctionComponent, useCallback } from 'react'
 import { connect } from 'react-redux'
 import FilmsList from '../FilmsList'
-import { addFilmToBookmarks } from '../../store/actionCreators'
+import { removeFilmFromBookmarks } from '../../store/actionCreators'
 
 import { IFilmItem } from '../../models'
 
@@ -10,28 +10,33 @@ type BookmarksContainerProps = {
   bookmarkedFilms: IFilmItem[]
   loading: boolean
   error: Error
-  addFilmToBookmarks: (bookmarkedFilm: IFilmItem) => void
+  removeFilmFromBookmarks: (bookmarkedFilm: IFilmItem) => void
 }
 
 const BookmarksContainer: FunctionComponent<BookmarksContainerProps> = ({
   bookmarkedFilms,
   loading,
   error,
-  addFilmToBookmarks,
+  removeFilmFromBookmarks,
 }) => {
-  // const handleBookmarkClick = useCallback(
-  //   (id: string) => {
-  //     const bookmarkedFilm = films.find((film) => film.id === id)
+  const handleBookmarkClick = useCallback(
+    (id: string) => {
+      const clickedFilm = bookmarkedFilms.find((film) => film.id === id)
 
-  //     bookmarkedFilm && addFilmToBookmarks(bookmarkedFilm)
-  //   },
-  //   [films],
-  // )
+      clickedFilm && removeFilmFromBookmarks(clickedFilm)
+    },
+    [bookmarkedFilms],
+  )
 
   return error ? (
     <h1>{error.message}</h1>
   ) : (
-    <FilmsList films={bookmarkedFilms} loading={loading} isHiddenBtnLoadMore />
+    <FilmsList
+      films={bookmarkedFilms}
+      onBookmarkClick={handleBookmarkClick}
+      loading={loading}
+      isHiddenBtnLoadMore
+    />
   )
 }
 
@@ -39,8 +44,8 @@ const mapStateToProps = (state: BookmarksContainerProps) => state
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    addFilmToBookmarks: (bookmarkedFilm: IFilmItem) =>
-      dispatch(addFilmToBookmarks(bookmarkedFilm)),
+    removeFilmFromBookmarks: (bookmarkedFilm: IFilmItem) =>
+      dispatch(removeFilmFromBookmarks(bookmarkedFilm)),
   }
 }
 

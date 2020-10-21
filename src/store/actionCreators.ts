@@ -7,6 +7,7 @@ import {
   UPDATE_PAGE_COUNT,
   ADD_FILM_TO_BOOKMARKS,
   REMOVE_FILM_FROM_BOOKMARKS,
+  UPDATE_FILMS_BOOKMARKING,
 } from '../store/actionTypes'
 import { IFilmItem, IFilmsData } from '../models'
 
@@ -48,6 +49,10 @@ const removeFilmFromBookmarks = (bookmarkedFilm: IFilmItem) => ({
   payload: bookmarkedFilm,
 })
 
+const updateFilmsBookmarking = () => ({
+  type: UPDATE_FILMS_BOOKMARKING,
+})
+
 const fetchFilms = (
   getData: Promise<IFilmsData>,
   bookmarkedFilms: IFilmItem[],
@@ -58,18 +63,20 @@ const fetchFilms = (
   getData
     .then((data) => {
       if (data.isValidSearchValue) {
-        let updatedWithBookmarks: IFilmItem[] = []
+        // let updatedWithBookmarks: IFilmItem[] = []
 
-        if (data && data.items) {
-          updatedWithBookmarks = data.items.map((item) => {
-            bookmarkedFilms.forEach((film) => {
-              if (film.id === item.id) item.isBookmarked = true
-            })
-            return item
-          })
-        }
+        // if (data && data.items) {
+        //   updatedWithBookmarks = data.items.map((item) => {
+        //     bookmarkedFilms.forEach((film) => {
+        //       if (film.id === item.id) item.isBookmarked = true
+        //     })
+        //     return item
+        //   })
+        // }
 
-        return dispatch(filmsLoaded({ ...data, items: updatedWithBookmarks }))
+        // dispatch(filmsLoaded({ ...data, items: updatedWithBookmarks }))
+        dispatch(filmsLoaded(data))
+        dispatch(updateFilmsBookmarking())
       } else {
         throw new Error("Sorry, we couldn't find any results for your request")
       }
@@ -84,4 +91,5 @@ export {
   fetchFilms,
   addFilmToBookmarks,
   removeFilmFromBookmarks,
+  updateFilmsBookmarking,
 }

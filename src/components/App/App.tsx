@@ -17,11 +17,7 @@ const App: FunctionComponent = () => {
       <Layout.Content className="app__content">
         <Row justify="center">
           <Col span={24}>
-            <Tabs
-              defaultActiveKey="1"
-              centered
-              onChange={() => console.log('tab changed')}
-            >
+            <Tabs defaultActiveKey="1" centered>
               <Tabs.TabPane
                 tab={
                   <span>

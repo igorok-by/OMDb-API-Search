@@ -7,6 +7,7 @@ import {
   UPDATE_PAGE_COUNT,
   ADD_FILM_TO_BOOKMARKS,
   REMOVE_FILM_FROM_BOOKMARKS,
+  UPDATE_FILMS_BOOKMARKING,
 } from './actionTypes'
 
 import { FIRST_PAGE_NUMBER } from '../utils/constants'
@@ -73,20 +74,36 @@ const reducer = (state: State = initialState, action: Action) => {
       }
 
     case ADD_FILM_TO_BOOKMARKS:
-      console.log('add')
       return {
         ...state,
         bookmarkedFilms: [...state.bookmarkedFilms, action.payload],
       }
 
+    case UPDATE_FILMS_BOOKMARKING:
+      const updatedWithBookmarks = state.films.map((film) => {
+        state.bookmarkedFilms.forEach((bookmarkedFilm) => {
+          if (bookmarkedFilm.id === film.id) film.isBookmarked = true
+        })
+        return film
+      })
+      return {
+        ...state,
+        films: updatedWithBookmarks,
+      }
+
     case REMOVE_FILM_FROM_BOOKMARKS:
-      console.log('remove')
       const idxOfRemoved = state.bookmarkedFilms.findIndex(
         (film) => film.id === action.payload.id,
       )
-
+      const updatedFilms = state.films.map((film) => {
+        if (film.id === action.payload.id) {
+          film.isBookmarked = !film.isBookmarked
+        }
+        return film
+      })
       return {
         ...state,
+        films: updatedFilms,
         bookmarkedFilms: [
           ...state.bookmarkedFilms.slice(0, idxOfRemoved),
           ...state.bookmarkedFilms.slice(idxOfRemoved + 1),

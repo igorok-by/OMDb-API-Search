@@ -60,8 +60,6 @@ const SearchListContainer: FunctionComponent<SearchListContainerProps> = ({
           ? addFilmToBookmarks(clickedFilm)
           : removeFilmFromBookmarks(clickedFilm)
       }
-      // console.log(bookmarkedFilms)
-      // clickedFilm.isBookmarked = true
     },
     [films, bookmarkedFilms],
   )
