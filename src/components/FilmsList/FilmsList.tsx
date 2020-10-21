@@ -54,7 +54,7 @@ const FilmsList: FunctionComponent<FilmsListProps> = ({
       </Button>
     )
 
-  return films ? (
+  return (
     <List
       className="list"
       itemLayout="vertical"
@@ -64,8 +64,6 @@ const FilmsList: FunctionComponent<FilmsListProps> = ({
       loading={loading}
       loadMore={btnLoadMore}
     />
-  ) : (
-    <h1>There're no films. Try to search something! :)</h1>
   )
 }
 

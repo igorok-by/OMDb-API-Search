@@ -26,13 +26,17 @@ const BookmarksContainer: FunctionComponent<BookmarksContainerProps> = ({
     [bookmarkedFilms],
   )
 
-  return (
+  return bookmarkedFilms.length ? (
     <FilmsList
       films={bookmarkedFilms}
       onBookmarkClick={handleBookmarkClick}
       loading={loading}
       isHiddenBtnLoadMore
     />
+  ) : (
+    <h1 className="list__message">
+      There're no films. Try to add something! :)
+    </h1>
   )
 }
 

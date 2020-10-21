@@ -63,7 +63,7 @@ const SearchListContainer: FunctionComponent<SearchListContainerProps> = ({
   const isHiddenBtnLoadMore = totalResults <= currentPage * ITEMS_PER_PAGE
 
   return error ? (
-    <h1>{error.message}</h1>
+    <h1 className="list__message">{error.message}</h1>
   ) : (
     <FilmsList
       films={films}
