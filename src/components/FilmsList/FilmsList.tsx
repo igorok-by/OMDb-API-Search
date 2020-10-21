@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, memo } from 'react'
 
 import { List, Avatar, Button } from 'antd'
 import { TagOutlined } from '@ant-design/icons'
@@ -13,7 +13,7 @@ type FilmsListProps = {
   loading: boolean
   isHiddenBtnLoadMore: boolean
   onLoadMore?: () => void
-  onBookmarkClick?: (id: string) => void
+  onBookmarkClick: (id: string) => void
 }
 
 const FilmsList: FunctionComponent<FilmsListProps> = ({
@@ -54,7 +54,7 @@ const FilmsList: FunctionComponent<FilmsListProps> = ({
       </Button>
     )
 
-  return (
+  return films ? (
     <List
       className="list"
       itemLayout="vertical"
@@ -64,6 +64,8 @@ const FilmsList: FunctionComponent<FilmsListProps> = ({
       loading={loading}
       loadMore={btnLoadMore}
     />
+  ) : (
+    <h1>There're no films. Try to search something! :)</h1>
   )
 }
 

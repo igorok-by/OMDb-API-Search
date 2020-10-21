@@ -23,12 +23,7 @@ import { SearchOutlined } from '@ant-design/icons'
 type SearchFormContainerProps = {
   searchSentence: string
   currentPage: number
-  bookmarkedFilms: IFilmItem[]
-  fetchFilmsData: (
-    searchValue: string,
-    page: number,
-    bookmarkedFilms: IFilmItem[],
-  ) => void
+  fetchFilmsData: (searchValue: string, page: number) => void
   updateSearchSentence: (searchValue: string) => void
   cleanFilms: () => void
   updatePageCount: (newPageCount: number) => void
@@ -68,7 +63,6 @@ const SearchForm: FunctionComponent<SearchFormProps> = ({ handleSearch }) => {
 const SearchFormContainer: FunctionComponent<SearchFormContainerProps> = ({
   searchSentence,
   currentPage,
-  bookmarkedFilms,
   fetchFilmsData,
   updateSearchSentence,
   updatePageCount,
@@ -77,7 +71,7 @@ const SearchFormContainer: FunctionComponent<SearchFormContainerProps> = ({
   useEffect(() => {
     cleanFilms()
     updatePageCount(FIRST_PAGE_NUMBER)
-    fetchFilmsData(searchSentence, currentPage, bookmarkedFilms)
+    fetchFilmsData(searchSentence, currentPage)
   }, [searchSentence])
 
   const handleSearch = useCallback(
@@ -92,19 +86,21 @@ const SearchFormContainer: FunctionComponent<SearchFormContainerProps> = ({
   return <SearchForm handleSearch={handleSearch} />
 }
 
-const mapStateToProps = (state: {
+const mapStateToProps = ({
+  searchSentence,
+  currentPage,
+}: {
   searchSentence: string
   currentPage: number
-  bookmarkedFilms: IFilmItem[]
-}) => state
+}) => ({
+  searchSentence,
+  currentPage,
+})
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    fetchFilmsData: (
-      searchValue: string,
-      page: number,
-      bookmarkedFilms: IFilmItem[],
-    ) => fetchFilms(getResource(searchValue, page), bookmarkedFilms, dispatch),
+    fetchFilmsData: (searchValue: string, page: number) =>
+      fetchFilms(getResource(searchValue, page), dispatch),
     updateSearchSentence: (searchSentence: string) =>
       dispatch(updateSearchSentence(searchSentence)),
     updatePageCount: (newPageCount: number) =>

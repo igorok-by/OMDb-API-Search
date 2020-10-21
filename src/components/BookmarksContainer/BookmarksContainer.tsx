@@ -9,14 +9,12 @@ import { IFilmItem } from '../../models'
 type BookmarksContainerProps = {
   bookmarkedFilms: IFilmItem[]
   loading: boolean
-  error: Error
   removeFilmFromBookmarks: (bookmarkedFilm: IFilmItem) => void
 }
 
 const BookmarksContainer: FunctionComponent<BookmarksContainerProps> = ({
   bookmarkedFilms,
   loading,
-  error,
   removeFilmFromBookmarks,
 }) => {
   const handleBookmarkClick = useCallback(
@@ -28,9 +26,7 @@ const BookmarksContainer: FunctionComponent<BookmarksContainerProps> = ({
     [bookmarkedFilms],
   )
 
-  return error ? (
-    <h1>{error.message}</h1>
-  ) : (
+  return (
     <FilmsList
       films={bookmarkedFilms}
       onBookmarkClick={handleBookmarkClick}
@@ -40,7 +36,16 @@ const BookmarksContainer: FunctionComponent<BookmarksContainerProps> = ({
   )
 }
 
-const mapStateToProps = (state: BookmarksContainerProps) => state
+const mapStateToProps = ({
+  bookmarkedFilms,
+  loading,
+}: {
+  bookmarkedFilms: IFilmItem[]
+  loading: boolean
+}) => ({
+  bookmarkedFilms,
+  loading,
+})
 
 const mapDispatchToProps = (dispatch: any) => {
   return {

@@ -21,11 +21,7 @@ type SearchListContainerProps = {
   loading: boolean
   error: Error
   bookmarkedFilms: IFilmItem[]
-  fetchNextPageFilmsData: (
-    searchSentence: string,
-    page: number,
-    bookmarkedFilms: IFilmItem[],
-  ) => void
+  fetchNextPageFilmsData: (searchSentence: string, page: number) => void
   updatePageCount: (newPageCount: number) => void
   addFilmToBookmarks: (bookmarkedFilm: IFilmItem) => void
   removeFilmFromBookmarks: (bookmarkedFilm: IFilmItem) => void
@@ -45,7 +41,7 @@ const SearchListContainer: FunctionComponent<SearchListContainerProps> = ({
   removeFilmFromBookmarks,
 }) => {
   const handleLoadMore = useCallback(() => {
-    fetchNextPageFilmsData(searchSentence, currentPage + 1, bookmarkedFilms)
+    fetchNextPageFilmsData(searchSentence, currentPage + 1)
     updatePageCount(currentPage + 1)
   }, [currentPage, searchSentence])
 
@@ -83,12 +79,8 @@ const mapStateToProps = (state: SearchListContainerProps) => state
 
 const mapDispatchToProps = (dispatch: any) => {
   return {
-    fetchNextPageFilmsData: (
-      searchSentence: string,
-      page: number,
-      bookmarkedFilms: IFilmItem[],
-    ) =>
-      fetchFilms(getResource(searchSentence, page), bookmarkedFilms, dispatch),
+    fetchNextPageFilmsData: (searchSentence: string, page: number) =>
+      fetchFilms(getResource(searchSentence, page), dispatch),
     updatePageCount: (newPageCount: number) =>
       dispatch(updatePageCount(newPageCount)),
     addFilmToBookmarks: (bookmarkedFilm: IFilmItem) =>

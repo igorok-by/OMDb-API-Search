@@ -53,28 +53,12 @@ const updateFilmsBookmarking = () => ({
   type: UPDATE_FILMS_BOOKMARKING,
 })
 
-const fetchFilms = (
-  getData: Promise<IFilmsData>,
-  bookmarkedFilms: IFilmItem[],
-  dispatch: any,
-) => {
+const fetchFilms = (getData: Promise<IFilmsData>, dispatch: any) => {
   dispatch(filmsRequested())
 
   getData
     .then((data) => {
       if (data.isValidSearchValue) {
-        // let updatedWithBookmarks: IFilmItem[] = []
-
-        // if (data && data.items) {
-        //   updatedWithBookmarks = data.items.map((item) => {
-        //     bookmarkedFilms.forEach((film) => {
-        //       if (film.id === item.id) item.isBookmarked = true
-        //     })
-        //     return item
-        //   })
-        // }
-
-        // dispatch(filmsLoaded({ ...data, items: updatedWithBookmarks }))
         dispatch(filmsLoaded(data))
         dispatch(updateFilmsBookmarking())
       } else {
