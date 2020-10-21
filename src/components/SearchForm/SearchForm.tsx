@@ -15,8 +15,6 @@ import {
   fetchFilms,
 } from '../../store/actionCreators'
 
-import { IFilmItem } from '../../models'
-
 import { Input } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
 

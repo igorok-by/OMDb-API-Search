@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { FunctionComponent, memo } from 'react'
+import React, { FunctionComponent } from 'react'
 
 import { List, Avatar, Button } from 'antd'
 import { TagOutlined } from '@ant-design/icons'

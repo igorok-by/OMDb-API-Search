@@ -85,7 +85,7 @@ const reducer = (state: State = INITIAL_STATE, action: Action) => {
       )
       const updatedFilms = state.films.map((film) => {
         if (film.id === action.payload.id) {
-          film.isBookmarked = !film.isBookmarked
+          film.isBookmarked = false
         }
         return film
       })
